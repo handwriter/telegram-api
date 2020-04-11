@@ -1,6 +1,7 @@
 from telegram.ext import Updater, MessageHandler, Filters
 from auth import TOKEN
 from telegram.ext import CallbackContext, CommandHandler
+from datetime import datetime
 
 
 # Определяем функцию-обработчик сообщений.
@@ -12,6 +13,16 @@ def echo(update, context):
     # а также метод reply_text(str),
     # отсылающий ответ пользователю, от которого получено сообщение.
     update.message.reply_text(f'Я получил сообщение "{update.message.text}"')
+
+def time(update, context):
+    update.message.reply_text(
+        str(datetime.now().time()))
+
+
+def date(update, context):
+    update.message.reply_text(
+        str(datetime.now().date()))
+
 
 
 def main():
@@ -42,6 +53,8 @@ def main():
     text_handler = MessageHandler(Filters.text, echo)
 
     # Регистрируем обработчик в диспетчере.
+    dp.add_handler(CommandHandler("date", date))
+    dp.add_handler(CommandHandler("time", time))
     dp.add_handler(text_handler)
     # Запускаем цикл приема и обработки сообщений.
 
